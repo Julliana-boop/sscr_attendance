@@ -77,13 +77,6 @@
         }
         .notif-footer:hover { color: #333; background: #f9f9f9; }
     </style>
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#8B0000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SSC-R Attend">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
     <div class="container">
@@ -129,10 +122,10 @@
                     </div>
                 </div>
                 <div class="student-profile">
-                    <div class="student-avatar">ML</div>
+                    <div class="student-avatar" id="headerAvatar">--</div>
                     <div>
-                        <div class="student-name">Mel Reynald Malacas</div>
-                        <div class="student-role">2026-0031 </div>
+                        <div class="student-name" id="headerName">Loading...</div>
+                        <div class="student-role" id="headerRole">—</div>
                     </div>
                 </div>
                 <button class="btn-logout" onclick="logout()">Logout</button>
@@ -388,36 +381,69 @@
         </div>
     </div>
 
-    <!-- Modal for QR Scanner -->
+    <!-- Modal for QR Scanner — REAL camera scanner -->
     <div id="qrScannerModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content modal-wide" style="max-width:480px;">
             <div class="modal-header">
-                <div class="modal-title">Scan QR Code</div>
-                <button class="modal-close" onclick="closeModal('qrScannerModal')">×</button>
+                <div class="modal-title">Scan Subject QR Code</div>
+                <button class="modal-close" onclick="closeQRModal()">×</button>
             </div>
-            <div style="text-align:center; padding:1.5rem;">
-                <div class="scanner-box">
-                    <p style="margin-bottom:1rem;">Align the QR code inside the frame</p>
-                    <div style="
-                        width:260px;
-                        height:260px;
-                        border:3px dashed #8b5cf6;
-                        border-radius:16px;
-                        margin:0 auto 1.5rem;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        color:#999;
-                    ">
-                        Camera Preview
+            <div style="padding:1rem;">
+                <div id="dashCameraWrap" style="display:none; margin-bottom:0.75rem;">
+                    <select id="dashCameraSelect" onchange="dashSwitchCamera()"
+                        style="width:100%; padding:0.5rem 0.8rem; border:2px solid var(--gold);
+                               border-radius:12px; font-family:'DM Sans',sans-serif; font-size:0.85rem;">
+                    </select>
+                </div>
+                <div id="dashScanStatus" style="
+                    padding:0.6rem 1rem; border-radius:10px; font-size:0.82rem;
+                    font-weight:700; margin-bottom:0.75rem; text-align:center;
+                    background:#fff3cd; color:#856404;">
+                    Initialising camera...
+                </div>
+                <div style="position:relative; border-radius:14px; overflow:hidden;
+                            border:3px solid var(--gold); background:#000; margin-bottom:0.75rem;">
+                    <div id="dash-qr-reader" style="width:100%;"></div>
+                    <div id="dashScanLine" style="
+                        position:absolute; left:0; right:0; top:0;
+                        height:3px; background:var(--gold); opacity:0.85;
+                        animation: dashScanMove 2s ease-in-out infinite; pointer-events:none;">
                     </div>
-                    <button class="btn btn-primary" onclick="simulateScan()">
-                        Scan QR Code
+                </div>
+                <p style="text-align:center; font-size:0.78rem; color:#888; margin-bottom:0.75rem;">
+                    Hold steady — scanning is automatic
+                </p>
+                <div id="dashSubjectConfirm" style="
+                    display:none; padding:1rem; border-radius:12px;
+                    border:2px solid var(--gold); background:#fffde7; margin-bottom:0.75rem;">
+                    <div id="dashScName" style="font-family:'Syne',sans-serif;
+                         font-weight:700; font-size:1rem; margin-bottom:0.25rem;">—</div>
+                    <div id="dashScMeta" style="font-size:0.8rem; color:#555;
+                         white-space:pre-line; margin-bottom:0.5rem;">—</div>
+                    <span id="dashScBadge" style="
+                        display:inline-block; padding:3px 12px; border-radius:20px;
+                        font-size:0.72rem; font-weight:700;
+                        background:#1a1a1a; color:var(--gold);">Verified</span>
+                </div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button id="dashConfirmBtn" class="btn btn-primary"
+                        style="flex:1; display:none;" onclick="dashConfirmAttendance()">
+                        Confirm Attendance
+                    </button>
+                    <button class="btn btn-secondary" style="flex:1;" onclick="closeQRModal()">
+                        Cancel
                     </button>
                 </div>
             </div>
         </div>
     </div>
+    <style>
+        @keyframes dashScanMove {
+            0%   { top: 0%; }
+            50%  { top: calc(100% - 3px); }
+            100% { top: 0%; }
+        }
+    </style>
 
     <!-- ── Contact Faculty Modal ─────────────────────────────────── -->
     <div id="contactModal" class="modal">
@@ -478,20 +504,20 @@
                 <div class="settings-section">
                     <div class="settings-section-title"> Edit Profile</div>
                     <div class="settings-avatar-row">
-                        <div class="student-avatar" style="width:64px;height:64px;font-size:1.4rem;" id="settingsAvatar">MM</div>
+                        <div class="student-avatar" style="width:64px;height:64px;font-size:1.4rem;" id="settingsAvatar">--</div>
                         <button class="btn btn-secondary" onclick="alert('Photo upload coming soon!')">Change Photo</button>
                     </div>
                     <div class="settings-form-row">
                         <label>Student Number</label>
-                        <input type="text" class="settings-input" value="2026-0031" id="settingsStudentNo" readonly style="background:#f3f4f6; cursor:not-allowed;">
+                        <input type="text" class="settings-input" value="" id="settingsStudentNo" readonly style="background:#f3f4f6; cursor:not-allowed;">
                     </div>
                     <div class="settings-form-row">
                         <label>Full Name</label>
-                        <input type="text" class="settings-input" value="Mel Reynald Malacas" id="settingsName">
+                        <input type="text" class="settings-input" value="" id="settingsName">
                     </div>
                     <div class="settings-form-row">
                         <label>Section</label>
-                        <input type="text" class="settings-input" value="Grade 7 - Section B" id="settingsSection">
+                        <input type="text" class="settings-input" value="" id="settingsSection">
                     </div>
                     <button class="btn btn-primary" style="margin-top:0.75rem;" onclick="saveProfile()">Save Changes</button>
                 </div>
@@ -588,15 +614,218 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <script src="students-data.js"></script>
     <script src="student.js"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(r => console.log('SW registered'))
-                    .catch(e => console.log('SW failed:', e));
+        // ── Session guard ──
+        (function() {
+            const session = JSON.parse(sessionStorage.getItem('sscr_user') || '{}');
+            if (!session.username || session.role !== 'student') {
+                window.location.href = 'login.html';
+            }
+        })();
+
+        // ════════════════════════════════════════════════════════
+        //  REAL QR SCANNER — dashboard version
+        // ════════════════════════════════════════════════════════
+        const SUBJECT_QR_CODES = {
+            'SSCR-MATH-SECA-DONEZA':    { subject:'Math',    section:'Sec A', faculty:'Rheymard Doneza', subjectFull:'Mathematics' },
+            'SSCR-MATH-SECB-DONEZA':    { subject:'Math',    section:'Sec B', faculty:'Rheymard Doneza', subjectFull:'Mathematics' },
+            'SSCR-MATH-SECC-DONEZA':    { subject:'Math',    section:'Sec C', faculty:'Rheymard Doneza', subjectFull:'Mathematics' },
+            'SSCR-ENGLISH-SECA-SORIANO':{ subject:'English', section:'Sec A', faculty:'Gary Soriano',    subjectFull:'English' },
+            'SSCR-ENGLISH-SECB-SORIANO':{ subject:'English', section:'Sec B', faculty:'Gary Soriano',    subjectFull:'English' },
+            'SSCR-ENGLISH-SECC-SORIANO':{ subject:'English', section:'Sec C', faculty:'Gary Soriano',    subjectFull:'English' },
+            'SSCR-SCIENCE-SECA-BERNAL': { subject:'Science', section:'Sec A', faculty:'Agnes Bernal',    subjectFull:'Science' },
+            'SSCR-SCIENCE-SECB-BERNAL': { subject:'Science', section:'Sec B', faculty:'Agnes Bernal',    subjectFull:'Science' },
+            'SSCR-SCIENCE-SECC-BERNAL': { subject:'Science', section:'Sec C', faculty:'Agnes Bernal',    subjectFull:'Science' },
+            'SSCR-FILIPINO-SECA-CARPIO':{ subject:'Filipino',section:'Sec A', faculty:'Gerome Carpio',   subjectFull:'Filipino' },
+            'SSCR-FILIPINO-SECB-CARPIO':{ subject:'Filipino',section:'Sec B', faculty:'Gerome Carpio',   subjectFull:'Filipino' },
+            'SSCR-FILIPINO-SECC-CARPIO':{ subject:'Filipino',section:'Sec C', faculty:'Gerome Carpio',   subjectFull:'Filipino' },
+        };
+
+        let dashScanner    = null;
+        let dashCameras    = [];
+        let dashCamId      = null;
+        let dashPaused     = false;
+        let dashSubject    = null;
+
+        function openQRScanner() {
+            // reset state
+            dashPaused  = false;
+            dashSubject = null;
+            document.getElementById('dashSubjectConfirm').style.display = 'none';
+            document.getElementById('dashConfirmBtn').style.display     = 'none';
+            document.getElementById('dashScanLine').style.animation     = 'dashScanMove 2s ease-in-out infinite';
+            dashSetStatus('Initialising camera...', 'warn');
+            document.getElementById('qrScannerModal').classList.add('show');
+            dashStartScanner();
+        }
+
+        async function dashStartScanner() {
+            try {
+                dashCameras = await Html5Qrcode.getCameras();
+            } catch(e) {
+                dashSetStatus('Camera permission denied. Please allow access.', 'error'); return;
+            }
+            if (!dashCameras.length) { dashSetStatus('No camera found on this device.', 'error'); return; }
+
+            if (dashCameras.length > 1) {
+                const sel = document.getElementById('dashCameraSelect');
+                sel.innerHTML = '';
+                dashCameras.forEach((c, i) => {
+                    const opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = c.label || 'Camera ' + (i + 1);
+                    if (c.label && c.label.toLowerCase().includes('back')) opt.selected = true;
+                    sel.appendChild(opt);
+                });
+                dashCamId = sel.value;
+                document.getElementById('dashCameraWrap').style.display = 'block';
+            } else {
+                dashCamId = dashCameras[0].id;
+            }
+            dashLaunch(dashCamId);
+        }
+
+        function dashLaunch(camId) {
+            if (dashScanner) {
+                dashScanner.stop().catch(()=>{}).finally(()=>{ dashScanner = null; _dashLaunch(camId); });
+            } else {
+                _dashLaunch(camId);
+            }
+        }
+
+        function _dashLaunch(camId) {
+            dashScanner = new Html5Qrcode('dash-qr-reader', { verbose: false });
+            dashScanner.start(
+                camId,
+                { fps:10, qrbox:{ width:220, height:220 }, aspectRatio:1.0 },
+                dashOnScanSuccess,
+                ()=>{}
+            ).then(()=>{
+                dashSetStatus('Scanning — align the teacher\'s QR code in the frame.', 'scanning');
+            }).catch(err=>{
+                dashSetStatus('Could not start camera: ' + (err.message || err), 'error');
             });
+        }
+
+        function dashSwitchCamera() {
+            dashCamId  = document.getElementById('dashCameraSelect').value;
+            dashPaused = false;
+            dashSubject = null;
+            document.getElementById('dashSubjectConfirm').style.display = 'none';
+            document.getElementById('dashConfirmBtn').style.display = 'none';
+            dashLaunch(dashCamId);
+        }
+
+        function dashOnScanSuccess(text) {
+            if (dashPaused) return;
+            dashPaused = true;
+            document.getElementById('dashScanLine').style.animation = 'none';
+
+            const code    = text.trim().toUpperCase();
+            const matched = SUBJECT_QR_CODES[code];
+            const session = JSON.parse(sessionStorage.getItem('sscr_user') || '{}');
+
+            const confirmEl = document.getElementById('dashSubjectConfirm');
+            const badgeEl   = document.getElementById('dashScBadge');
+            const confirmBtn = document.getElementById('dashConfirmBtn');
+
+            if (matched) {
+                document.getElementById('dashScName').textContent = matched.subjectFull + ' — ' + matched.section;
+                document.getElementById('dashScMeta').textContent = 'Teacher: ' + matched.faculty + '\nMarking attendance for: ' + (session.displayName || 'Student');
+                badgeEl.textContent = 'Subject QR Verified';
+                badgeEl.style.background = '#1a1a1a';
+                badgeEl.style.color = 'var(--gold)';
+                confirmEl.style.display = 'block';
+                confirmEl.style.borderColor = 'var(--gold)';
+                dashSubject = matched;
+                dashSetStatus('Subject found: ' + matched.subjectFull + '. Tap Confirm to mark present.', 'success');
+                confirmBtn.style.display = 'block';
+                confirmBtn.textContent = 'Confirm Attendance';
+            } else {
+                document.getElementById('dashScName').textContent = 'Invalid QR Code';
+                document.getElementById('dashScMeta').textContent = 'Not a valid subject QR. Ask your teacher for the correct code.';
+                badgeEl.textContent = 'Not Recognised';
+                badgeEl.style.background = '#dc2626';
+                badgeEl.style.color = '#fff';
+                confirmEl.style.display = 'block';
+                confirmEl.style.borderColor = '#dc2626';
+                dashSubject = null;
+                dashSetStatus('Invalid QR code. Please try again.', 'error');
+                confirmBtn.style.display = 'block';
+                confirmBtn.textContent = 'Scan Again';
+                confirmBtn.onclick = dashReScan;
+            }
+        }
+
+        function dashReScan() {
+            dashPaused  = false;
+            dashSubject = null;
+            document.getElementById('dashSubjectConfirm').style.display = 'none';
+            document.getElementById('dashConfirmBtn').style.display = 'none';
+            document.getElementById('dashConfirmBtn').onclick = dashConfirmAttendance;
+            document.getElementById('dashScanLine').style.animation = 'dashScanMove 2s ease-in-out infinite';
+            dashSetStatus('Scanning — align the teacher\'s QR code in the frame.', 'scanning');
+            dashLaunch(dashCamId);
+        }
+
+        function dashConfirmAttendance() {
+            if (!dashSubject) { dashReScan(); return; }
+            if (dashScanner) { dashScanner.stop().catch(()=>{}); dashScanner = null; }
+
+            const session   = JSON.parse(sessionStorage.getItem('sscr_user') || '{}');
+            const studentId = session.username ? session.username.replace(/^S/, '') : null;
+            const time      = new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+            const today     = new Date().toISOString().split('T')[0];
+
+            if (studentId && typeof DB !== 'undefined') {
+                DB.init();
+                DB.set(dashSubject.subject, dashSubject.section, studentId, 'Present', time, today);
+            }
+
+            sessionStorage.setItem('sscr_last_scan', JSON.stringify({
+                subject: dashSubject.subject,
+                section: dashSubject.section,
+                faculty: dashSubject.faculty,
+                timeIn:  time,
+                date:    today,
+            }));
+
+            dashSetStatus('✓ Attendance recorded for ' + dashSubject.subjectFull + ' at ' + time, 'success');
+            document.getElementById('dashConfirmBtn').disabled = true;
+            document.getElementById('dashConfirmBtn').textContent = 'Recorded!';
+
+            setTimeout(()=>{
+                closeQRModal();
+                location.reload(); // refresh dashboard to reflect new scan
+            }, 1500);
+        }
+
+        function closeQRModal() {
+            if (dashScanner) { dashScanner.stop().catch(()=>{}); dashScanner = null; }
+            dashPaused  = false;
+            dashSubject = null;
+            document.getElementById('qrScannerModal').classList.remove('show');
+            document.getElementById('dashCameraWrap').style.display = 'none';
+            document.getElementById('dashSubjectConfirm').style.display = 'none';
+            document.getElementById('dashConfirmBtn').style.display = 'none';
+            document.getElementById('dashConfirmBtn').onclick = dashConfirmAttendance;
+        }
+
+        function dashSetStatus(msg, type) {
+            const el = document.getElementById('dashScanStatus');
+            const styles = {
+                warn:     { bg:'#fff3cd', color:'#856404' },
+                scanning: { bg:'#e0f2fe', color:'#0369a1' },
+                success:  { bg:'#dcfce7', color:'#15803d' },
+                error:    { bg:'#fee2e2', color:'#dc2626' },
+            };
+            const s = styles[type] || styles.warn;
+            el.style.background = s.bg;
+            el.style.color      = s.color;
+            el.textContent      = msg;
         }
     </script>
 </body>
