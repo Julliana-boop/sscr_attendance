@@ -12,13 +12,6 @@
     <!-- Student roster + global data — must load BEFORE inline scripts -->
     <script src="students-data.js"></script>
     <link rel="stylesheet" href="admin.css">
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#8B0000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SSC-R Attend">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
     <div class="container">
@@ -682,22 +675,24 @@
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
       function viewLogs() { window.location.href = 'system-logs.html'; }
         function logout() {
-            if (confirm('Are you sure you want to logout?')) window.location.href = 'login.html';
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('sscr_user');
+                window.location.href = 'login.html';
+            }
         }
         window.onclick = function(e) {
             document.querySelectorAll('.modal').forEach(m => { if (e.target === m) m.classList.remove('show'); });
         };
+
+        // ── Session guard: redirect if not admin ──
+        (function() {
+            const session = JSON.parse(sessionStorage.getItem('sscr_user') || '{}');
+            if (!session.username || session.role !== 'admin') {
+                window.location.href = 'login.html';
+            }
+        })();
     </script>
 
 
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(r => console.log('SW registered'))
-                    .catch(e => console.log('SW failed:', e));
-            });
-        }
-    </script>
 </body>
 </html>
