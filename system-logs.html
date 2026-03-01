@@ -7,13 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="student-log.css">
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#8B0000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SSC-R Attend">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 
 <body>
@@ -493,18 +486,22 @@ window.onclick = function(e) {
 
 // ── Init ──────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
+    // Session guard — only admin can view logs
+    const session = JSON.parse(sessionStorage.getItem('sscr_user') || '{}');
+    if (!session.username || session.role !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+    }
     updateStats(ALL_LOGS);
     renderLogs();
 });
+
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        sessionStorage.removeItem('sscr_user');
+        window.location.href = 'login.html';
+    }
+}
 </script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(r => console.log('SW registered'))
-                    .catch(e => console.log('SW failed:', e));
-            });
-        }
-    </script>
 </body>
 </html>
