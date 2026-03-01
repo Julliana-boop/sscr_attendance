@@ -1,7 +1,4 @@
 # SSC-R Attendance System — PWA Deployment Guide
-## Publish to GitHub Pages in 30 Minutes (Free)
-
----
 
 ## What You'll Have After This
 - A real URL like `https://YOUR-USERNAME.github.io/sscr-attendance/`
@@ -14,64 +11,7 @@
 ## Step 1 — Create a GitHub Account
 Go to **https://github.com** → Sign Up → free account is enough.
 
----
-
-## Step 2 — Create a New Repository
-1. Click the **+** button top-right → **New repository**
-2. Name it: `sscr-attendance`
-3. Set to **Public** (required for free GitHub Pages)
-4. ✅ Check **Add a README file**
-5. Click **Create repository**
-
----
-
-## Step 3 — Upload Your Files
-In your new repository, click **Add file → Upload files** and upload ALL of these:
-
-```
-login.html          ← use the latest version from this project
-login.js            ← use the latest version
-login.css
-student.html        ← use the latest version
-student.js          ← use the latest version
-student.css         ← use the latest version
-students-data.js
-faculty.html        ← use the latest version
-faculty.js
-faculty.css
-faculty-scans.js
-admin.html          ← use the latest version
-admin.css
-system-logs.html    ← use the latest version
-student-log.css
-manifest.json       ← NEW — from this PWA package
-service-worker.js   ← NEW — from this PWA package
-sscrmnlofficiallogo.png    ← your school logo
-sscr.png                   ← background image (if you have it)
-```
-
-Also upload the **icons folder** (drag the whole folder or upload each icon):
-```
-icons/icon-144.png
-icons/icon-192.png
-icons/icon-512.png
-```
-
-Click **Commit changes**.
-
----
-
-## Step 4 — Enable GitHub Pages
-1. In your repository, click **Settings** (top tab)
-2. In the left sidebar, click **Pages**
-3. Under **Source**, select **Deploy from a branch**
-4. Under **Branch**, select `main` → `/ (root)` → click **Save**
-5. Wait 2–3 minutes, then refresh the page
-6. You'll see: **"Your site is live at https://YOUR-USERNAME.github.io/sscr-attendance/"**
-
----
-
-## Step 5 — Test on Mobile
+## Step 2 — Test on Mobile
 1. Open Chrome on your Android phone
 2. Go to your URL: `https://YOUR-USERNAME.github.io/sscr-attendance/login.html`
 3. Log in as any student
@@ -87,7 +27,7 @@ Click **Commit changes**.
 
 ---
 
-## Step 6 — Share the Link
+## Step 3 — Share the Link
 Send this link to all students and teachers:
 ```
 https://YOUR-USERNAME.github.io/sscr-attendance/login.html
@@ -95,21 +35,6 @@ https://YOUR-USERNAME.github.io/sscr-attendance/login.html
 
 They open it once → add to home screen → from that point on it's just an icon on their phone.
 
----
-
-## Updating Files Later
-When you make changes to your code:
-1. Go to your GitHub repository
-2. Click the file you want to update
-3. Click the **pencil icon** (Edit)
-4. Paste the new content
-5. Click **Commit changes**
-
-The live site updates automatically within 1–2 minutes.
-
-Or use **Add file → Upload files** to replace multiple files at once.
-
----
 
 ## Troubleshooting
 
