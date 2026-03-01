@@ -23,13 +23,6 @@
             margin: 0 !important;
         }
     </style>
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#8B0000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SSC-R Attend">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
     <div class="container">
@@ -69,10 +62,10 @@
                     </div>
                 </div>
                 <div class="faculty-profile">
-                    <div class="faculty-avatar">AB</div>
+                    <div class="faculty-avatar" id="facultyAvatar">--</div>
                     <div>
-                        <div class="faculty-name">Agnes Bernal</div>
-                        <div class="faculty-role">Software Engineering</div>
+                        <div class="faculty-name" id="facultyName">Loading...</div>
+                        <div class="faculty-role" id="facultyRole">Faculty</div>
                     </div>
                 </div>
                 <button class="btn-logout" onclick="logout()">Logout</button>
@@ -400,15 +393,31 @@
     <script src="students-data.js"></script>
     <script src="faculty-scans.js"></script>
     <script src="faculty.js"></script>
-
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(r => console.log('SW registered'))
-                    .catch(e => console.log('SW failed:', e));
-            });
-        }
+        // ── Session guard + profile pill injector ──
+        (function() {
+            const session = JSON.parse(sessionStorage.getItem('sscr_user') || '{}');
+            if (!session.username || session.role !== 'faculty') {
+                window.location.href = 'login.html';
+                return;
+            }
+            // Map faculty usernames to their subject/department
+            const FACULTY_META = {
+                'F-Doneza':  { subject: 'Mathematics' },
+                'F-Soriano': { subject: 'English' },
+                'F-Bernal':  { subject: 'Science' },
+                'F-Carpio':  { subject: 'Filipino' },
+            };
+            const meta     = FACULTY_META[session.username] || { subject: 'Faculty' };
+            const name     = session.displayName || session.username;
+            const initials = name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('');
+            const avatarEl = document.getElementById('facultyAvatar');
+            const nameEl   = document.getElementById('facultyName');
+            const roleEl   = document.getElementById('facultyRole');
+            if (avatarEl) avatarEl.textContent = initials;
+            if (nameEl)   nameEl.textContent   = name;
+            if (roleEl)   roleEl.textContent   = meta.subject;
+        })();
     </script>
 </body>
 </html>
