@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSC-R Attendance — Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+    <!-- QR scanner library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <!-- Student roster — must load before login.js -->
+    <script src="students-data.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8B0000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SSC-R Attend">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ══════════════════════════════════════════════════
+         STEP 1: Login / Sign Up
+    ══════════════════════════════════════════════════ -->
+    <div class="card" id="step-login">
+
+        <!-- Logo -->
+        <div class="card-logo">
+            <img src="sscrmnlofficiallogo.png" alt="SSC-R Logo" onerror="this.style.display='none'">
+        </div>
+
+        <h1 class="card-title">SSC-R Attendance</h1>
+        <p class="card-subtitle">San Sebastian College-Recoletos Manila</p>
+
+        <!-- Tab row -->
+        <div class="tab-row">
+            <button class="tab-btn active" data-tab="login" onclick="switchTab('login')">Log In</button>
+            <button class="tab-btn" data-tab="signup" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+
+        <!-- ── LOGIN PANEL ── -->
+        <div class="form-panel active" id="panel-login">
+            <div class="alert alert-error" id="login-alert"></div>
+
+            <form id="login-form" autocomplete="on" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="login-username">School Username</label>
+                    <input
+                        type="text"
+                        id="login-username"
+                        class="form-input"
+                        placeholder="e.g. S2026-0031"
+                        autocomplete="username"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <div class="password-wrap">
+                        <input
+                            type="password"
+                            id="login-password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+                        <button type="button" class="toggle-pwd" id="toggleLoginPwd">Show</button>
+                    </div>
+                </div>
+
+                <div class="remember-row">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginBtn">Log In</button>
+            </form>
+
+            <div class="forgot-row">
+                <button type="button" class="forgot-link" onclick="switchTab('forgot')">Forgot Password?</button>
+            </div>
+
+            <!-- Demo credentials -->
+            <button class="hint-toggle" id="hintToggle">Show demo credentials</button>
+            <div class="hint-panel hidden" id="hintPanel">
+                <div class="hint-section-label">Admin</div>
+                <div class="hint-row" data-user="A-Gonzaga" data-pass="admin2026">
+                    <span class="hint-user">A-Gonzaga</span>
+                    <span><span class="hint-pass">admin2026</span><span class="hint-fill-tip">click to fill</span></span>
+                </div>
+                <div class="hint-section-label">Faculty</div>
+                <div class="hint-row" data-user="F-Doneza" data-pass="math">
+                    <span class="hint-user">F-Doneza</span>
+                    <span><span class="hint-pass">math</span><span class="hint-fill-tip">click to fill</span></span>
+                </div>
+                <div class="hint-row" data-user="F-Soriano" data-pass="english">
+                    <span class="hint-user">F-Soriano</span>
+                    <span><span class="hint-pass">english</span><span class="hint-fill-tip">click to fill</span></span>
+                </div>
+                <div class="hint-row" data-user="F-Bernal" data-pass="science">
+                    <span class="hint-user">F-Bernal</span>
+                    <span><span class="hint-pass">science</span><span class="hint-fill-tip">click to fill</span></span>
+                </div>
+                <div class="hint-row" data-user="F-Carpio" data-pass="filipino">
+                    <span class="hint-user">F-Carpio</span>
+                    <span><span class="hint-pass">filipino</span><span class="hint-fill-tip">click to fill</span></span>
+                </div>
+                <div class="hint-section-label">Student (sample)</div>
+                <div class="hint-row" data-user="S2026-0031" data-pass="malacas">
+                    <span class="hint-user">S2026-0031</span>
+                    <span><span class="hint-pass">malacas</span><span class="hint-fill-tip">click to fill</span></span>
+                </div>
+                <div class="hint-row" data-user="S2026-0015" data-pass="ciceron">
+                    <span class="hint-user">S2026-0015</span>
+                    <span><span class="hint-pass">ciceron</span><span class="hint-fill-tip">click to fill</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── SIGN UP PANEL ── -->
+        <div class="form-panel" id="panel-signup">
+            <div class="alert alert-error" id="signup-alert"></div>
+
+            <form id="signup-form" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="signup-name">Full Name</label>
+                    <input
+                        type="text"
+                        id="signup-name"
+                        class="form-input"
+                        placeholder="Last Name, First Name"
+                        autocomplete="name"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="signup-username">Desired Username</label>
+                    <input
+                        type="text"
+                        id="signup-username"
+                        class="form-input"
+                        placeholder="e.g. S2026-0050"
+                        autocomplete="off"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="signup-password">Password</label>
+                    <div class="password-wrap">
+                        <input
+                            type="password"
+                            id="signup-password"
+                            class="form-input"
+                            placeholder="Minimum 6 characters"
+                            autocomplete="new-password"
+                            required>
+                        <button type="button" class="toggle-pwd" id="toggleSignupPwd">Show</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="signup-confirm">Confirm Password</label>
+                    <input
+                        type="password"
+                        id="signup-confirm"
+                        class="form-input"
+                        placeholder="Re-enter password"
+                        autocomplete="new-password"
+                        required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+
+            <div class="divider">or</div>
+            <p style="text-align:center; font-size:0.8rem; color:#888;">
+                Already have an account?
+                <button
+                    type="button"
+                    class="hint-toggle"
+                    style="display:inline; margin:0; font-size:0.8rem;"
+                    onclick="switchTab('login')">Log in here</button>
+            </p>
+        </div>
+
+        <!-- ── FORGOT PASSWORD PANEL ── -->
+        <div class="form-panel" id="panel-forgot">
+            <div class="alert alert-error" id="forgot-alert"></div>
+            <div class="alert alert-success" id="forgot-success"></div>
+
+            <p class="forgot-desc">
+                Enter your school username below. If it exists in the system,
+                your password hint will be displayed to the admin for verification.
+            </p>
+
+            <form id="forgot-form" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="forgot-username">School Username</label>
+                    <input
+                        type="text"
+                        id="forgot-username"
+                        class="form-input"
+                        placeholder="e.g. S2026-0031"
+                        autocomplete="off"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="forgot-answer">Security Answer</label>
+                    <input
+                        type="text"
+                        id="forgot-answer"
+                        class="form-input"
+                        placeholder="Your last name (lowercase)"
+                        autocomplete="off"
+                        required>
+                </div>
+
+                <div class="form-group hidden" id="new-pwd-group">
+                    <label class="form-label" for="forgot-newpwd">New Password</label>
+                    <div class="password-wrap">
+                        <input
+                            type="password"
+                            id="forgot-newpwd"
+                            class="form-input"
+                            placeholder="Minimum 6 characters"
+                            autocomplete="new-password">
+                        <button type="button" class="toggle-pwd" id="toggleForgotPwd">Show</button>
+                    </div>
+                </div>
+
+                <div class="form-group hidden" id="confirm-pwd-group">
+                    <label class="form-label" for="forgot-confirmpwd">Confirm New Password</label>
+                    <input
+                        type="password"
+                        id="forgot-confirmpwd"
+                        class="form-input"
+                        placeholder="Re-enter new password"
+                        autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="forgotBtn">Verify Identity</button>
+            </form>
+
+            <div class="divider">or</div>
+            <p style="text-align:center; font-size:0.8rem; color:#888;">
+                Remembered your password?
+                <button
+                    type="button"
+                    class="forgot-link"
+                    onclick="switchTab('login')">Back to Log In</button>
+            </p>
+        </div>
+
+    </div><!-- /step-login -->
+
+
+    <!-- ══════════════════════════════════════════════════
+         STEP 2: Choice (student only, shown after login)
+    ══════════════════════════════════════════════════ -->
+    <div class="card hidden" id="step-choice">
+        <h1 class="card-title">Welcome Back</h1>
+        <p class="card-subtitle" id="choice-greeting">Choose how to proceed.</p>
+
+        <div class="choice-grid">
+            <div class="choice-box" onclick="openScanner()">
+                <span class="choice-icon-text">QR Scan</span>
+                <span class="choice-label">Mark Attendance</span>
+            </div>
+            <div class="choice-box" onclick="goDashboard()">
+                <span class="choice-icon-text">Dashboard</span>
+                <span class="choice-label">View Records</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════════
+         STEP 3: QR Scanner
+    ══════════════════════════════════════════════════ -->
+    <div class="card hidden" id="step-scanner">
+
+        <div class="scanner-header">
+            <button class="scanner-back-btn" onclick="backToChoice()">Back</button>
+            <div>
+                <div class="card-title" style="text-align:left; margin-bottom:0;">Scan QR Code</div>
+                <div class="card-subtitle" style="text-align:left; margin-bottom:0;">
+                    Scan your teacher's subject QR code to mark attendance
+                </div>
+            </div>
+        </div>
+
+        <!-- Camera selector — populated by JS when multiple cameras available -->
+        <div class="camera-select-wrap hidden" id="cameraSelectWrap">
+            <select class="camera-select" id="cameraSelect" onchange="switchCamera()"></select>
+        </div>
+
+        <!-- Status banner -->
+        <div class="scan-status scanning show" id="scanStatus">
+            Initialising camera...
+        </div>
+
+        <!-- Live camera viewport -->
+        <div class="qr-viewport-wrap" id="qrViewportWrap">
+            <div id="qr-reader"></div>
+            <div class="qr-corners">
+                <div class="qr-corner-br"></div>
+                <div class="qr-corner-bl"></div>
+            </div>
+            <div class="scan-line" id="scanLine"></div>
+        </div>
+
+        <p class="scanner-hint">Hold the camera steady — scanning is automatic</p>
+
+        <!-- Subject result card -->
+        <div class="subject-confirm" id="subjectConfirm">
+            <div class="sc-name" id="scName">—</div>
+            <div class="sc-meta" id="scMeta">—</div>
+            <span class="sc-badge" id="scBadge">Subject QR Verified</span>
+        </div>
+
+        <button class="btn btn-primary hidden" id="confirmBtn" onclick="confirmAttendance()">
+            Confirm Attendance
+        </button>
+        <button class="btn btn-secondary" onclick="backToChoice()">Cancel</button>
+
+    </div><!-- /step-scanner -->
+
+</div><!-- /container -->
+
+<script src="login.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(r => console.log('SW registered'))
+                    .catch(e => console.log('SW failed:', e));
+            });
+        }
+    </script>
+</body>
+</html>
