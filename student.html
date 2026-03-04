@@ -7,6 +7,60 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="student.css">
     <link rel="stylesheet" href="mobile-fix.css">
+    
+<nav class="mobile-nav" id="mobileNav">
+
+    <button class="mobile-nav-btn" onclick="openModal('attendanceHistoryModal')">
+        <i data-lucide="clipboard-list" class="nav-icon-svg"></i>
+        <span class="nav-label">History</span>
+    </button>
+
+    <button class="mobile-nav-btn" onclick="openModal('scheduleModal')">
+        <i data-lucide="calendar-days" class="nav-icon-svg"></i>
+        <span class="nav-label">Schedule</span>
+    </button>
+
+    <!-- QR — center gold button -->
+    <button class="mobile-nav-btn nav-qr" onclick="openQRScanner()">
+        <i data-lucide="scan-line" class="nav-icon-svg"></i>
+        <span class="nav-label">QR Scan</span>
+    </button>
+
+    <button class="mobile-nav-btn" onclick="toggleNotifications(event)" id="mobileNotifBtn">
+        <span style="position:relative;display:inline-flex;">
+            <i data-lucide="bell" class="nav-icon-svg"></i>
+            <span class="nav-badge" id="mobileNotifBadge" style="display:none"></span>
+        </span>
+        <span class="nav-label">Alerts</span>
+    </button>
+
+    <button class="mobile-nav-btn" onclick="openModal('settingsModal')">
+        <i data-lucide="settings" class="nav-icon-svg"></i>
+        <span class="nav-label">Settings</span>
+    </button>
+
+</nav>
+
+<script>
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    // Sync notification badge to mobile nav
+    (function syncMobileNavBadge() {
+        const observer = new MutationObserver(() => {
+            const desktopBadge = document.getElementById('notificationCount');
+            const mobileBadge  = document.getElementById('mobileNotifBadge');
+            if (!desktopBadge || !mobileBadge) return;
+            const count = desktopBadge.textContent.trim();
+            const show  = desktopBadge.style.display !== 'none' && count !== '0' && count !== '';
+            mobileBadge.textContent   = count;
+            mobileBadge.style.display = show ? 'flex' : 'none';
+        });
+        const target = document.getElementById('notificationCount');
+        if (target) observer.observe(target, { childList: true, attributes: true, attributeFilter: ['style'] });
+    })();
+</script>
+
+
     <style>
         /* ── Notification Dropdown (matches faculty theme) ── */
         .notification-wrapper { position: relative; }
