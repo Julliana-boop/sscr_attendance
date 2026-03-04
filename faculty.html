@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="faculty.css">
     <link rel="stylesheet" href="mobile-fix.css">
+    <link rel="stylesheet" href="mobile-app.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         /* Notification dropdown — drops directly below the bell, right-aligned to it */
         .notification-wrapper {
@@ -24,43 +26,6 @@
             margin: 0 !important;
         }
     </style>
-
-    
-<nav class="mobile-nav" id="mobileNav">
-
-    <button class="mobile-nav-btn" onclick="openModal('attendanceModal')">
-        <i data-lucide="clipboard-list" class="nav-icon-svg"></i>
-        <span class="nav-label">Attendance</span>
-    </button>
-
-    <button class="mobile-nav-btn" onclick="openModal('scheduleModal')">
-        <i data-lucide="calendar-days" class="nav-icon-svg"></i>
-        <span class="nav-label">Schedule</span>
-    </button>
-
-    <button class="mobile-nav-btn nav-qr" onclick="openModal('generateQRModal')">
-        <i data-lucide="qr-code" class="nav-icon-svg"></i>
-        <span class="nav-label">Show QR</span>
-    </button>
-
-    <button class="mobile-nav-btn" onclick="toggleNotifications(event)">
-        <span style="position:relative;display:inline-flex;">
-            <i data-lucide="bell" class="nav-icon-svg"></i>
-            <span class="nav-badge" id="mobileNotifBadge" style="display:none"></span>
-        </span>
-        <span class="nav-label">Alerts</span>
-    </button>
-
-    <button class="mobile-nav-btn" onclick="logout()">
-        <i data-lucide="log-out" class="nav-icon-svg"></i>
-        <span class="nav-label">Logout</span>
-    </button>
-
-</nav>
-<script>
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-</script>
-
 </head>
 <body>
     <div class="container">
@@ -457,5 +422,39 @@
             if (roleEl)   roleEl.textContent   = meta.subject;
         })();
     </script>
+
+    <!-- ══ MOBILE BOTTOM NAV — correctly placed before </body> ══ -->
+    <nav class="mobile-nav" id="mobileNav">
+
+        <button class="mobile-nav-btn" onclick="openModal('attendanceModal')">
+            <i data-lucide="clipboard-list" class="nav-icon-svg"></i>
+            <span class="nav-label">Attendance</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="openModal('scheduleModal')">
+            <i data-lucide="calendar-days" class="nav-icon-svg"></i>
+            <span class="nav-label">Schedule</span>
+        </button>
+
+        <button class="mobile-nav-btn nav-qr" onclick="openModal('generateQRModal')">
+            <i data-lucide="qr-code" class="nav-icon-svg"></i>
+            <span class="nav-label">Show QR</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="toggleNotifications(event)">
+            <span style="position:relative;display:inline-flex;">
+                <i data-lucide="bell" class="nav-icon-svg"></i>
+                <span class="nav-badge" id="mobileNotifBadge" style="display:none"></span>
+            </span>
+            <span class="nav-label">Alerts</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="logout()">
+            <i data-lucide="log-out" class="nav-icon-svg"></i>
+            <span class="nav-label">Logout</span>
+        </button>
+
+    </nav>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
