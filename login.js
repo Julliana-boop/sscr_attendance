@@ -77,8 +77,6 @@ const CREDENTIALS = {
 
 // ───────────────────────────────────────────────────────────────────────────
 //  SUBJECT QR CODE REGISTRY
-//  Teachers display these codes in class; students scan to mark attendance.
-//  Format: SSCR-<SUBJECT>-<SECTION>-<FACULTYCODE>
 // ───────────────────────────────────────────────────────────────────────────
 const SUBJECT_QR_CODES = {
     'SSCR-MATH-SECA-DONEZA':    { subject: 'Math',    section: 'Sec A', faculty: 'Rheymard Doneza', subjectFull: 'Mathematics' },
@@ -151,7 +149,6 @@ function showStep(id) {
 //  ALERT HELPERS
 // ───────────────────────────────────────────────────────────────────────────
 function showAlert(msg, type) {
-    // type: 'error' | 'success'
     const activePanel = document.querySelector('.form-panel.active');
     if (!activePanel) return;
     const el = activePanel.querySelector('.alert');
@@ -167,7 +164,7 @@ function clearAlert() {
 function shakeCard() {
     const card = document.getElementById('step-login');
     card.style.animation = 'none';
-    card.offsetHeight; // reflow
+    card.offsetHeight;
     card.style.animation = 'shake 0.4s ease';
 }
 
@@ -191,7 +188,6 @@ function disableLoginFor(btn, ms) {
 //  TAB SWITCHING
 // ───────────────────────────────────────────────────────────────────────────
 function switchTab(tab) {
-    // Show/hide the tab row — forgot password is outside normal tabs
     const tabRow = document.querySelector('.tab-row');
     tabRow.style.display = (tab === 'forgot') ? 'none' : '';
 
@@ -203,7 +199,6 @@ function switchTab(tab) {
     });
     clearAlert();
 
-    // Reset forgot form state when leaving it
     if (tab !== 'forgot') {
         resetForgotForm();
     }
@@ -214,7 +209,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 // ───────────────────────────────────────────────────────────────────────────
-//  FORGOT PASSWORD STATE + HELPERS (top-level so switchTab can call them)
+//  FORGOT PASSWORD STATE + HELPERS
 // ───────────────────────────────────────────────────────────────────────────
 let forgotVerified = false;
 
@@ -254,7 +249,7 @@ function showForgotSuccess(msg) {
 }
 
 // ───────────────────────────────────────────────────────────────────────────
-//  DOM BINDINGS — run after DOM is ready
+//  DOM BINDINGS
 // ───────────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -311,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Success
+        // ✅ Success
         clearFailures(username);
         if (remember) {
             localStorage.setItem('sscr_remembered_user', username);
@@ -327,9 +322,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }));
 
         if (cred.role === 'student') {
-            const firstName = cred.displayName.split(',')[0];
-            document.getElementById('choice-greeting').textContent =
-                `Hello, ${firstName}. Choose how to proceed.`;
+            // ✅ FIX: safely update greeting only if the element exists
+            const greetingEl = document.getElementById('choice-greeting');
+            if (greetingEl) {
+                const firstName = cred.displayName.split(',')[0];
+                greetingEl.textContent = `Hello, ${firstName}. Choose how to proceed.`;
+            }
             showStep('step-choice');
         } else {
             window.location.href = cred.redirect;
@@ -586,7 +584,6 @@ function onQrSuccess(decodedText) {
     const badgeEl   = document.getElementById('scBadge');
 
     if (matched) {
-        // Check student is in the right section
         const studentId = session.username ? session.username.replace(/^S/, '') : null;
         const student   = ALL_STUDENTS.find(s => s.id === studentId);
         const wrongSection = student && `Sec ${student.section}` !== matched.section
