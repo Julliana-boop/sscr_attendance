@@ -370,14 +370,14 @@
     border-radius: 12px;
     transition: all 0.2s ease;
     min-width: 56px;
-    color: rgba(255,255,255,0.55);
+    color: #DC143C;
     font-family: 'DM Sans', sans-serif;
 }
 
 .mobile-nav-btn:hover,
 .mobile-nav-btn.active {
-    background: rgba(255, 215, 0, 0.15);
-    color: var(--gold);
+    background: rgba(220, 20, 60, 0.15);
+    color: #8B0000;
 }
 
 .mobile-nav-btn .nav-icon {
@@ -393,7 +393,10 @@
     white-space: nowrap;
 }
 
-/* QR button — highlighted center button */
+.mobile-nav-btn:hover .nav-icon-svg,
+.mobile-nav-btn.active .nav-icon-svg {
+    stroke: #8B0000;
+}
 .mobile-nav-btn.nav-qr {
     background: var(--gold) !important;
     color: #000 !important;
@@ -407,6 +410,22 @@
     background: #FFA500 !important;
     transform: translateY(-6px) !important;
     box-shadow: 0 8px 20px rgba(255,215,0,0.5) !important;
+}
+
+/* ── Single-color Lucide SVG icons — all RED ── */
+.nav-icon-svg {
+    width: 22px;
+    height: 22px;
+    stroke: #DC143C;         /* red — always, on every button */
+    stroke-width: 2;
+    fill: none;
+    display: block;
+    margin: 0 auto;
+}
+
+/* QR center button — red icon on gold background */
+.mobile-nav-btn.nav-qr .nav-icon-svg {
+    stroke: #DC143C !important;
 }
 
 /* Notification badge on nav */
