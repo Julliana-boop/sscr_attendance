@@ -1,0 +1,437 @@
+/* ═══════════════════════════════════════════════════════════
+   SSC-R Attendance System — Mobile Responsive Fix
+   Add this <link> tag to ALL your HTML pages, AFTER your
+   existing CSS link:
+   <link rel="stylesheet" href="mobile-fix.css">
+
+   Also make sure EVERY HTML file has this in <head>:
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Base mobile reset ────────────────────────────────────── */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ── Container padding tightened on small screens ─────────── */
+@media (max-width: 600px) {
+    .container {
+        padding: 0.75rem !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HEADER — stack everything vertically on mobile
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+        padding: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .header-left {
+        gap: 0.75rem !important;
+    }
+
+    .logo-img {
+        height: 60px !important;
+    }
+
+    .header-info h2 {
+        font-size: 1.1rem !important;
+    }
+
+    .header-info p {
+        font-size: 0.82rem !important;
+    }
+
+    .header-right {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+    }
+
+    /* Hide quick action buttons on mobile — too crowded */
+    .header-actions {
+        display: none !important;
+    }
+
+    /* Profile pill takes full width */
+    .admin-profile,
+    .faculty-profile,
+    .student-profile {
+        width: 100% !important;
+        border-radius: 12px !important;
+        padding: 0.6rem 1rem !important;
+    }
+
+    .btn-logout {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+
+    /* Notification dropdown repositioned */
+    .notif-dropdown {
+        right: 0.5rem !important;
+        width: calc(100vw - 1rem) !important;
+        top: auto !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STATS GRID — single column on phones
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .stats-grid,
+    .stats-row {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem !important;
+    }
+
+    .stat-card {
+        padding: 1rem !important;
+    }
+
+    .stat-value,
+    .stat-val {
+        font-size: 2rem !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .stats-grid,
+    .stats-row {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .card {
+        padding: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .card-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+    }
+
+    .card-title {
+        font-size: 1.1rem !important;
+    }
+
+    .card-actions {
+        width: 100% !important;
+        flex-wrap: wrap !important;
+    }
+
+    .card-actions .btn {
+        flex: 1 !important;
+        min-width: 120px !important;
+        font-size: 0.82rem !important;
+        padding: 0.6rem 0.75rem !important;
+        justify-content: center !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TABLES — horizontal scroll on mobile
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 10px !important;
+    }
+
+    .data-table {
+        min-width: 600px; /* forces horizontal scroll rather than squishing */
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 0.5rem 0.65rem !important;
+        font-size: 0.8rem !important;
+        white-space: nowrap;
+    }
+
+    .action-btn {
+        padding: 0.25rem 0.55rem !important;
+        font-size: 0.72rem !important;
+        margin-right: 0.2rem !important;
+    }
+
+    .status-badge {
+        padding: 0.2rem 0.5rem !important;
+        font-size: 0.72rem !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTROLS BAR (search + filters)
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .controls-bar,
+    .filters-bar,
+    .filter-row {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .search-box,
+    .filter-group,
+    select.filter-select,
+    .date-input {
+        width: 100% !important;
+        min-width: unset !important;
+        flex: unset !important;
+    }
+
+    .filter-group {
+        flex-wrap: wrap !important;
+    }
+
+    .filter-group select,
+    .filter-group .filter-select {
+        flex: 1 !important;
+        min-width: 120px !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GRID-2 (two-column layouts)
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95% !important;
+        max-width: unset !important;
+        padding: 1.25rem 1rem !important;
+        max-height: 92vh !important;
+        border-radius: 16px !important;
+    }
+
+    .modal-content.modal-large,
+    .modal-content.modal-wide {
+        width: 98% !important;
+        padding: 1rem 0.75rem !important;
+    }
+
+    .modal-title {
+        font-size: 1.1rem !important;
+    }
+
+    .class-modal-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .class-stats-grid,
+    .attendance-summary {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.5rem !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FORM ELEMENTS
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .form-input,
+    .form-select,
+    .form-textarea {
+        font-size: 16px !important; /* prevents iOS zoom on focus */
+        padding: 0.75rem 1rem !important;
+    }
+
+    .form-group {
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MANAGEMENT BUTTONS (icon grid)
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    /* If mgmt-btns are in a grid, collapse to 2 columns */
+    .mgmt-grid,
+    .button-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem !important;
+    }
+
+    .mgmt-btn {
+        padding: 1.25rem 0.75rem !important;
+    }
+
+    .mgmt-btn-title {
+        font-size: 0.85rem !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PAGINATION
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .pagination {
+        flex-wrap: wrap !important;
+        gap: 0.3rem !important;
+    }
+
+    .page-btn {
+        padding: 0.4rem 0.65rem !important;
+        font-size: 0.8rem !important;
+        min-width: 34px !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCHEDULE GRID
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .schedule-grid {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        display: block !important; /* scroll as a block */
+    }
+
+    /* Wrap the inner grid so it scrolls */
+    .schedule-grid > * {
+        min-width: 560px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOGIN PAGE specific
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem 0.75rem !important;
+    }
+
+    .card {
+        padding: 1.5rem 1.25rem 1.25rem !important;
+    }
+
+    .choice-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem !important;
+    }
+
+    .choice-box {
+        padding: 1.25rem 0.5rem 1rem !important;
+    }
+
+    .choice-label {
+        font-size: 0.85rem !important;
+    }
+
+    .tab-btn {
+        font-size: 0.8rem !important;
+        padding: 0.5rem !important;
+    }
+
+    .hint-panel {
+        font-size: 0.75rem !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AUDIT LOG page specific
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .stats-row {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .search-wrap {
+        min-width: unset !important;
+        flex: unset !important;
+        width: 100% !important;
+    }
+
+    .detail-row {
+        flex-direction: column !important;
+        gap: 0.25rem !important;
+    }
+
+    .detail-label {
+        min-width: unset !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   QR Scanner card
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .qr-viewport-wrap {
+        border-radius: 10px !important;
+    }
+
+    .scanner-header {
+        gap: 0.5rem !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REPORT STRIP
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .report-strip {
+        gap: 0.5rem !important;
+        padding: 0.6rem !important;
+    }
+
+    .rp-val {
+        font-size: 1.1rem !important;
+    }
+
+    .rp-meta {
+        width: 100% !important;
+        margin-left: 0 !important;
+        text-align: center !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY — tap targets (min 44px for iOS guideline)
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-success,
+    .btn-logout,
+    .page-btn,
+    .tab-btn {
+        min-height: 44px !important;
+    }
+
+    /* Prevent text from being too tiny anywhere */
+    body {
+        font-size: 15px !important;
+    }
+}
