@@ -8,6 +8,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="student-log.css">
     <link rel="stylesheet" href="mobile-fix.css">
+    <link rel="stylesheet" href="mobile-app.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 
 <body>
@@ -30,8 +32,6 @@
             <button class="btn-logout" onclick="goBack()">Back to Dashboard</button>
         </div>
     </div>
-
-    
 
     <!-- Stats Row -->
     <div class="stats-row" id="statsRow">
@@ -209,7 +209,6 @@ const LS_LOGS_KEY = 'sscr_logs';
 
 function persistLogs() {
     try {
-        // Store timestamps as ISO strings so JSON round-trips correctly
         const serialisable = ALL_LOGS.map(function(l) {
             return Object.assign({}, l, { timestamp: new Date(l.timestamp).toISOString() });
         });
@@ -222,18 +221,15 @@ function loadLogs() {
         const raw = localStorage.getItem(LS_LOGS_KEY);
         if (!raw) return null;
         const parsed = JSON.parse(raw);
-        // Re-hydrate timestamp strings back to Date objects
         return parsed.map(function(l) {
             return Object.assign({}, l, { timestamp: new Date(l.timestamp) });
         });
     } catch(e) { return null; }
 }
 
-// Load persisted logs, or fall back to freshly generated demo set
 let ALL_LOGS = loadLogs() || generateLogs();
-if (!localStorage.getItem(LS_LOGS_KEY)) persistLogs();   // persist the initial seed
+if (!localStorage.getItem(LS_LOGS_KEY)) persistLogs();
 
-// ── Public helper — called by admin.html and faculty.js to append real actions ──
 function appendLog(action, description, severity, userName, role, ip) {
     ALL_LOGS.unshift({
         id:        'LOG-' + String(ALL_LOGS.length + 1).padStart(5, '0'),
@@ -337,7 +333,6 @@ function renderLogs() {
             '<td style="text-align:center;"><span class="sev ' + sevClass + '" title="' + l.severity + '"></span></td>' +
             '<td><button class="btn btn-dark" style="padding:3px 10px;font-size:.72rem;" onclick="event.stopPropagation();showDetail(logs_ref_' + (globalIdx + i) + ')">View</button></td>';
 
-        // store reference for button click
         window['logs_ref_' + (globalIdx + i)] = l;
         tbody.appendChild(tr);
     });
@@ -404,7 +399,6 @@ function buildPagination(totalPages, totalRows) {
 
 // ── Actions ───────────────────────────────────────────────────────────────
 function refreshLogs() {
-    // Prepend a new real-time log entry to simulate live activity
     const user = USERS[0];
     const now  = new Date();
     ALL_LOGS.unshift({
@@ -466,7 +460,6 @@ function exportLogs() {
         XLSX.utils.book_append_sheet(wb, ws, 'System Logs');
         XLSX.writeFile(wb, 'SSC-R_SystemLogs_' + fmtDateOnly(new Date()) + '.xlsx');
     } else {
-        // Fallback CSV
         const csv = wsData.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\n');
         const a = document.createElement('a');
         a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
@@ -479,15 +472,12 @@ function goBack() {
     window.location.href = 'admin.html';
 }
 
-// ── Close modal on backdrop click ─────────────────────────────────────────
 window.onclick = function(e) {
     const modal = document.getElementById('detailModal');
     if (e.target === modal) closeModal();
 };
 
-// ── Init ──────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-    // Session guard — only admin can view logs
     const session = JSON.parse(sessionStorage.getItem('sscr_user') || '{}');
     if (!session.username || session.role !== 'admin') {
         window.location.href = 'login.html';
@@ -504,5 +494,36 @@ function logout() {
     }
 }
 </script>
+
+    <!-- ══ MOBILE BOTTOM NAV — correctly placed before </body> ══ -->
+    <nav class="mobile-nav" id="mobileNav">
+
+        <button class="mobile-nav-btn" onclick="_page=1;renderLogs()">
+            <i data-lucide="list" class="nav-icon-svg"></i>
+            <span class="nav-label">All Logs</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="document.getElementById('filterType').value='Error';_page=1;renderLogs()">
+            <i data-lucide="alert-triangle" class="nav-icon-svg"></i>
+            <span class="nav-label">Errors</span>
+        </button>
+
+        <button class="mobile-nav-btn nav-qr" onclick="exportLogs()">
+            <i data-lucide="download" class="nav-icon-svg"></i>
+            <span class="nav-label">Export</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="refreshLogs()">
+            <i data-lucide="refresh-cw" class="nav-icon-svg"></i>
+            <span class="nav-label">Refresh</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="goBack()">
+            <i data-lucide="arrow-left" class="nav-icon-svg"></i>
+            <span class="nav-label">Back</span>
+        </button>
+
+    </nav>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
