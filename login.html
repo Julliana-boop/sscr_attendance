@@ -288,9 +288,6 @@
             <button class="scanner-back-btn" onclick="backToChoice()">Back</button>
             <div>
                 <div class="card-title" style="text-align:left; margin-bottom:0;">Scan QR Code</div>
-                <div class="card-subtitle" style="text-align:left; margin-bottom:0;">
-                    Scan your teacher's subject QR code to mark attendance
-                </div>
             </div>
         </div>
 
@@ -299,10 +296,6 @@
             <select class="camera-select" id="cameraSelect" onchange="switchCamera()"></select>
         </div>
 
-        <!-- Status banner -->
-        <div class="scan-status scanning show" id="scanStatus">
-            Initialising camera...
-        </div>
 
         <!-- Live camera viewport -->
         <div class="qr-viewport-wrap" id="qrViewportWrap">
@@ -314,7 +307,7 @@
             <div class="scan-line" id="scanLine"></div>
         </div>
 
-        <p class="scanner-hint">Hold the camera steady — scanning is automatic</p>
+    
 
         <!-- Subject result card -->
         <div class="subject-confirm" id="subjectConfirm">
