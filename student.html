@@ -7,60 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="student.css">
     <link rel="stylesheet" href="mobile-fix.css">
-    
-<nav class="mobile-nav" id="mobileNav">
-
-    <button class="mobile-nav-btn" onclick="openModal('attendanceHistoryModal')">
-        <i data-lucide="clipboard-list" class="nav-icon-svg"></i>
-        <span class="nav-label">History</span>
-    </button>
-
-    <button class="mobile-nav-btn" onclick="openModal('scheduleModal')">
-        <i data-lucide="calendar-days" class="nav-icon-svg"></i>
-        <span class="nav-label">Schedule</span>
-    </button>
-
-    <!-- QR — center gold button -->
-    <button class="mobile-nav-btn nav-qr" onclick="openQRScanner()">
-        <i data-lucide="scan-line" class="nav-icon-svg"></i>
-        <span class="nav-label">QR Scan</span>
-    </button>
-
-    <button class="mobile-nav-btn" onclick="toggleNotifications(event)" id="mobileNotifBtn">
-        <span style="position:relative;display:inline-flex;">
-            <i data-lucide="bell" class="nav-icon-svg"></i>
-            <span class="nav-badge" id="mobileNotifBadge" style="display:none"></span>
-        </span>
-        <span class="nav-label">Alerts</span>
-    </button>
-
-    <button class="mobile-nav-btn" onclick="openModal('settingsModal')">
-        <i data-lucide="settings" class="nav-icon-svg"></i>
-        <span class="nav-label">Settings</span>
-    </button>
-
-</nav>
-
-<script>
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-
-    // Sync notification badge to mobile nav
-    (function syncMobileNavBadge() {
-        const observer = new MutationObserver(() => {
-            const desktopBadge = document.getElementById('notificationCount');
-            const mobileBadge  = document.getElementById('mobileNotifBadge');
-            if (!desktopBadge || !mobileBadge) return;
-            const count = desktopBadge.textContent.trim();
-            const show  = desktopBadge.style.display !== 'none' && count !== '0' && count !== '';
-            mobileBadge.textContent   = count;
-            mobileBadge.style.display = show ? 'flex' : 'none';
-        });
-        const target = document.getElementById('notificationCount');
-        if (target) observer.observe(target, { childList: true, attributes: true, attributeFilter: ['style'] });
-    })();
-</script>
-
-
+    <link rel="stylesheet" href="mobile-app.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         /* ── Notification Dropdown (matches faculty theme) ── */
         .notification-wrapper { position: relative; }
@@ -509,36 +457,36 @@
             </div>
             <div class="modal-body-scroll">
                 <div class="faculty-list">
-                    <a class="faculty-card" href="/cdn-cgi/l/email-protection#533432212a7d203c213a323d3c13202030213e3d3f7d3637267d233b">
+                    <a class="faculty-card" href="mailto:gary.soriano@sscr.edu.ph">
                         <div class="faculty-avatar">GS</div>
                         <div class="faculty-info">
                             <div class="faculty-name">Gary Soriano</div>
                             <div class="faculty-subject">English</div>
-                            <div class="faculty-email"><span class="__cf_email__" data-cfemail="385f594a41164b574a51595657784b4b5b4a555654165d5c4d164850">[email&#160;protected]</span></div>
+                            <div class="faculty-email">gary.soriano@sscr.edu.ph</div>
                         </div>
                     </a>
-                    <a class="faculty-card" href="/cdn-cgi/l/email-protection#394b515c4054584b5d175d56575c4358794a4a5a4b545755175c5d4c174951">
+                    <a class="faculty-card" href="mailto:rheymard.doneza@sscr.edu.ph">
                         <div class="faculty-avatar">RD</div>
                         <div class="faculty-info">
                             <div class="faculty-name">Rheymard Doneza</div>
                             <div class="faculty-subject">Math</div>
-                            <div class="faculty-email"><span class="__cf_email__" data-cfemail="61130904180c0013054f050e0f041b0021121202130c0f0d4f0405144f1109">[email&#160;protected]</span></div>
+                            <div class="faculty-email">rheymard.doneza@sscr.edu.ph</div>
                         </div>
                     </a>
-                    <a class="faculty-card" href="/cdn-cgi/l/email-protection#4627212823356824233428272a06353525342b282a6823223368362e">
+                    <a class="faculty-card" href="mailto:agnes.bernal@sscr.edu.ph">
                         <div class="faculty-avatar">AB</div>
                         <div class="faculty-info">
                             <div class="faculty-name">Agnes Bernal</div>
                             <div class="faculty-subject">Science</div>
-                            <div class="faculty-email"><span class="__cf_email__" data-cfemail="fc9d9b92998fd29e998e929d90bc8f8f9f8e919290d2999889d28c94">[email&#160;protected]</span></div>
+                            <div class="faculty-email">agnes.bernal@sscr.edu.ph</div>
                         </div>
                     </a>
-                    <a class="faculty-card" href="/cdn-cgi/l/email-protection#690e0c1b06040c470a081b190006291a1a0a1b040705470c0d1c471901">
+                    <a class="faculty-card" href="mailto:gerome.carpio@sscr.edu.ph">
                         <div class="faculty-avatar">GC</div>
                         <div class="faculty-info">
                             <div class="faculty-name">Gerome Carpio</div>
                             <div class="faculty-subject">Filipino</div>
-                            <div class="faculty-email"><span class="__cf_email__" data-cfemail="bcdbd9ced3d1d992dfddceccd5d3fccfcfdfced1d2d092d9d8c992ccd4">[email&#160;protected]</span></div>
+                            <div class="faculty-email">gerome.carpio@sscr.edu.ph</div>
                         </div>
                     </a>
                 </div>
@@ -595,9 +543,7 @@
                     <button class="btn btn-primary" style="margin-top:0.75rem;" onclick="alert('Password updated!')">Update Password</button>
                 </div>
 
-
                 <!-- Section: Theme -->
-                
                 <div class="settings-section">
                     <div class="settings-section-title"> Theme</div>
                     <div class="settings-toggle-row">
@@ -621,7 +567,6 @@
                 <button class="modal-close" onclick="closeModal('subjectsModal')">×</button>
             </div>
             <div class="modal-body-scroll">
-                </p>
                 <div class="faculty-list">
 
                     <div class="faculty-card" style="cursor:default;">
@@ -631,7 +576,6 @@
                             <div class="faculty-subject">Rheymard Doneza</div>
                             <div class="faculty-email">Room 101 · Mon/Wed/Fri 07:00 AM &amp; Tue/Thu 01:00 PM</div>
                         </div>
-                        
                     </div>
 
                     <div class="faculty-card" style="cursor:default;">
@@ -641,7 +585,6 @@
                             <div class="faculty-subject">Gary Soriano</div>
                             <div class="faculty-email">Room 102 · Mon/Wed/Thu 08:30 AM, Tue/Thu 02:30 PM &amp; Mon 04:00 PM</div>
                         </div>
-                     
                     </div>
 
                     <div class="faculty-card" style="cursor:default;">
@@ -651,7 +594,6 @@
                             <div class="faculty-subject">Agnes Bernal</div>
                             <div class="faculty-email">Lab 201 · Tue/Fri 08:30 AM</div>
                         </div>
-                        
                     </div>
 
                     <div class="faculty-card" style="cursor:default;">
@@ -661,7 +603,6 @@
                             <div class="faculty-subject">Gerome Carpio</div>
                             <div class="faculty-email">Room 103 · Tue 10:00 AM &amp; Fri 04:00 PM</div>
                         </div>
-                        
                     </div>
 
                 </div>
@@ -706,7 +647,6 @@
         let dashSubject    = null;
 
         function openQRScanner() {
-            // reset state
             dashPaused  = false;
             dashSubject = null;
             document.getElementById('dashSubjectConfirm').style.display = 'none';
@@ -783,8 +723,8 @@
             const matched = SUBJECT_QR_CODES[code];
             const session = JSON.parse(sessionStorage.getItem('sscr_user') || '{}');
 
-            const confirmEl = document.getElementById('dashSubjectConfirm');
-            const badgeEl   = document.getElementById('dashScBadge');
+            const confirmEl  = document.getElementById('dashSubjectConfirm');
+            const badgeEl    = document.getElementById('dashScBadge');
             const confirmBtn = document.getElementById('dashConfirmBtn');
 
             if (matched) {
@@ -882,6 +822,58 @@
             el.style.color      = s.color;
             el.textContent      = msg;
         }
+    </script>
+
+    <!-- ══ MOBILE BOTTOM NAV — correctly placed before </body> ══ -->
+    <nav class="mobile-nav" id="mobileNav">
+
+        <button class="mobile-nav-btn" onclick="openModal('attendanceHistoryModal')">
+            <i data-lucide="clipboard-list" class="nav-icon-svg"></i>
+            <span class="nav-label">History</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="openModal('scheduleModal')">
+            <i data-lucide="calendar-days" class="nav-icon-svg"></i>
+            <span class="nav-label">Schedule</span>
+        </button>
+
+        <!-- QR — center gold button -->
+        <button class="mobile-nav-btn nav-qr" onclick="openQRScanner()">
+            <i data-lucide="scan-line" class="nav-icon-svg"></i>
+            <span class="nav-label">QR Scan</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="toggleNotifications(event)" id="mobileNotifBtn">
+            <span style="position:relative;display:inline-flex;">
+                <i data-lucide="bell" class="nav-icon-svg"></i>
+                <span class="nav-badge" id="mobileNotifBadge" style="display:none"></span>
+            </span>
+            <span class="nav-label">Alerts</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="openModal('settingsModal')">
+            <i data-lucide="settings" class="nav-icon-svg"></i>
+            <span class="nav-label">Settings</span>
+        </button>
+
+    </nav>
+    <script>
+        lucide.createIcons();
+
+        // Sync notification badge to mobile nav
+        (function syncMobileNavBadge() {
+            const observer = new MutationObserver(() => {
+                const desktopBadge = document.getElementById('notificationCount');
+                const mobileBadge  = document.getElementById('mobileNotifBadge');
+                if (!desktopBadge || !mobileBadge) return;
+                const count = desktopBadge.textContent.trim();
+                const show  = desktopBadge.style.display !== 'none' && count !== '0' && count !== '';
+                mobileBadge.textContent   = count;
+                mobileBadge.style.display = show ? 'flex' : 'none';
+            });
+            const target = document.getElementById('notificationCount');
+            if (target) observer.observe(target, { childList: true, attributes: true, attributeFilter: ['style'] });
+        })();
     </script>
 </body>
 </html>
