@@ -260,9 +260,13 @@
 
     <!-- ══════════════════════════════════════════════════
          STEP 2: Choice (student only, shown after login)
+         ✅ FIX: Added id="choice-greeting" element
     ══════════════════════════════════════════════════ -->
     <div class="card hidden" id="step-choice">
         <h1 class="card-title">Welcome Back</h1>
+
+        <!-- ✅ THIS WAS MISSING — caused crash on mobile -->
+        <p id="choice-greeting" style="text-align:center; margin: 0.5rem 0 1.25rem; color:#555; font-size:0.95rem;"></p>
 
         <div class="choice-grid">
             <div class="choice-box" onclick="openScanner()">
@@ -270,7 +274,6 @@
             </div>
             <div class="choice-box" onclick="goDashboard()">
                 <span class="choice-icon-text">Dashboard</span>
-
             </div>
         </div>
     </div>
@@ -291,7 +294,7 @@
             </div>
         </div>
 
-        <!-- Camera selector — populated by JS when multiple cameras available -->
+        <!-- Camera selector -->
         <div class="camera-select-wrap hidden" id="cameraSelectWrap">
             <select class="camera-select" id="cameraSelect" onchange="switchCamera()"></select>
         </div>
@@ -330,14 +333,14 @@
 </div><!-- /container -->
 
 <script src="login.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(r => console.log('SW registered'))
-                    .catch(e => console.log('SW failed:', e));
-            });
-        }
-    </script>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(r => console.log('SW registered'))
+                .catch(e => console.log('SW failed:', e));
+        });
+    }
+</script>
 </body>
 </html>
