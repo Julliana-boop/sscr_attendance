@@ -1,0 +1,432 @@
+/* ═══════════════════════════════════════════════════════════
+   SSC-R — Mobile App Layout
+   Add AFTER your existing CSS on student.html, faculty.html,
+   and admin.html:
+       <link rel="stylesheet" href="mobile-fix.css">
+       <link rel="stylesheet" href="mobile-app.css">
+
+   NO separate HTML needed — this CSS transforms the existing
+   desktop layout into an app-style layout on phones/tablets.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════════════════════
+   ONLY activates on mobile (max 768px)
+   Everything below is scoped to mobile screens
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* ── 1. BODY — add padding at bottom for the nav bar ── */
+    body {
+        padding-bottom: 90px !important;
+    }
+
+    /* ── 2. CONTAINER — full width, tight padding ── */
+    .container {
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       3. TOP HEADER — slim app-style top bar
+          Logo left | Title center | Avatar right
+       ══════════════════════════════════════════════════════ */
+    .header {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 0 !important;
+        margin-bottom: 0 !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-top: none !important;
+        min-height: 64px !important;
+    }
+
+    /* Hide the big header text info on mobile */
+    .header-info {
+        display: none !important;
+    }
+
+    /* Logo — small and round */
+    .header-left {
+        gap: 0 !important;
+    }
+
+    .logo-img {
+        height: 42px !important;
+        width: 42px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        border: 2px solid var(--gold) !important;
+    }
+
+    /* Hide header action buttons */
+    .header-actions,
+    .btn-logout {
+        display: none !important;
+    }
+
+    /* Profile pill → compact round avatar only */
+    .admin-profile,
+    .faculty-profile,
+    .student-profile {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        border-radius: 0 !important;
+        width: auto !important;
+    }
+
+    /* Hide the name/role text next to avatar */
+    .admin-name, .admin-role,
+    .faculty-name, .faculty-role,
+    .student-name, .student-role {
+        display: none !important;
+    }
+
+    /* Avatar circle — show only this */
+    .admin-avatar,
+    .faculty-avatar,
+    .student-avatar {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 1rem !important;
+        border-radius: 50% !important;
+        border: 2px solid var(--gold) !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Notification bell stays visible, compact */
+    .notification-btn {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 1rem !important;
+        border-radius: 50% !important;
+        background: rgba(255,255,255,0.15) !important;
+        margin-right: 0 !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       4. MAIN CONTENT AREA — scrollable, padded
+       ══════════════════════════════════════════════════════ */
+    .container > *:not(.header) {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       5. STATS — wide pill card at top (like "statistic" block)
+       ══════════════════════════════════════════════════════ */
+    .stats-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        gap: 0.75rem !important;
+        padding: 1rem 1rem 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+        scroll-snap-type: x mandatory !important;
+        /* hide scrollbar visually */
+        scrollbar-width: none !important;
+    }
+    .stats-grid::-webkit-scrollbar { display: none !important; }
+
+    .stat-card {
+        flex: 0 0 48% !important;
+        min-width: 140px !important;
+        scroll-snap-align: start !important;
+        padding: 1rem !important;
+        border-radius: 18px !important;
+    }
+
+    .stat-value {
+        font-size: 2rem !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       6. CARDS — large full-width blocks like the mockup
+       ══════════════════════════════════════════════════════ */
+    .card {
+        border-radius: 20px !important;
+        margin: 0.75rem 1rem !important;
+        padding: 1.25rem !important;
+        border: 2px solid var(--gold) !important;
+    }
+
+    .card-header {
+        flex-direction: row !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+        padding-bottom: 0.75rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .card-title {
+        font-size: 1.1rem !important;
+    }
+
+    .card-actions {
+        flex-wrap: wrap !important;
+        gap: 0.4rem !important;
+    }
+
+    .card-actions .btn {
+        font-size: 0.78rem !important;
+        padding: 0.45rem 0.8rem !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       7. TABLE — horizontal scroll, compact
+       ══════════════════════════════════════════════════════ */
+    .table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        border-radius: 12px !important;
+    }
+
+    .data-table {
+        min-width: 540px !important;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 0.5rem 0.7rem !important;
+        font-size: 0.78rem !important;
+        white-space: nowrap !important;
+    }
+
+    .action-btn {
+        padding: 0.2rem 0.5rem !important;
+        font-size: 0.7rem !important;
+        margin-right: 0.15rem !important;
+    }
+
+    .status-badge {
+        padding: 0.15rem 0.5rem !important;
+        font-size: 0.7rem !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       8. FILTERS / SEARCH BAR — stacked
+       ══════════════════════════════════════════════════════ */
+    .controls-bar,
+    .filters-bar,
+    .filter-row {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .search-box,
+    select.filter-select,
+    .date-input {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       9. GRID-2 — single column
+       ══════════════════════════════════════════════════════ */
+    .grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       10. MODAL — full-screen sheet style
+       ══════════════════════════════════════════════════════ */
+    .modal-content {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: 88vh !important;
+        border-radius: 24px 24px 0 0 !important;
+        padding: 1.5rem 1rem 2rem !important;
+        animation: slideUpSheet 0.3s ease !important;
+        margin: 0 !important;
+    }
+
+    @keyframes slideUpSheet {
+        from { transform: translateY(100%); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    .modal.show {
+        align-items: flex-end !important;
+    }
+
+    /* Drag handle on modal */
+    .modal-content::before {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 4px;
+        background: #ddd;
+        border-radius: 2px;
+        margin: 0 auto 1.25rem;
+    }
+
+    .modal-title {
+        font-size: 1.1rem !important;
+    }
+
+    .class-modal-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       11. FORMS
+       ══════════════════════════════════════════════════════ */
+    .form-input,
+    .form-select,
+    .form-textarea {
+        font-size: 16px !important;
+        padding: 0.75rem 1rem !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       12. BOTTOM NAV BAR
+           Replaces desktop header actions with a tab bar
+           Icons: QR Scan | Schedule | Notifications | Settings
+           + Logout hidden in "more" or settings
+       ══════════════════════════════════════════════════════ */
+    .mobile-nav {
+        display: flex !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       13. PAGINATION — compact
+       ══════════════════════════════════════════════════════ */
+    .pagination {
+        flex-wrap: wrap !important;
+        gap: 0.25rem !important;
+        justify-content: center !important;
+    }
+
+    .page-btn {
+        padding: 0.35rem 0.6rem !important;
+        font-size: 0.78rem !important;
+        min-width: 32px !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       14. MANAGEMENT BUTTON GRID
+       ══════════════════════════════════════════════════════ */
+    .mgmt-grid,
+    .button-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem !important;
+    }
+
+    .mgmt-btn {
+        padding: 1.25rem 0.75rem !important;
+        border-radius: 16px !important;
+    }
+
+    .mgmt-btn-title {
+        font-size: 0.82rem !important;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   BOTTOM NAV BAR — hidden on desktop, shown on mobile
+   ══════════════════════════════════════════════════════════ */
+.mobile-nav {
+    display: none; /* hidden by default, shown via media query above */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(26, 26, 26, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 2px solid var(--gold);
+    padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom));
+    align-items: center;
+    justify-content: space-around;
+    gap: 0.25rem;
+}
+
+.mobile-nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    min-width: 56px;
+    color: rgba(255,255,255,0.55);
+    font-family: 'DM Sans', sans-serif;
+}
+
+.mobile-nav-btn:hover,
+.mobile-nav-btn.active {
+    background: rgba(255, 215, 0, 0.15);
+    color: var(--gold);
+}
+
+.mobile-nav-btn .nav-icon {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+.mobile-nav-btn .nav-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+/* QR button — highlighted center button */
+.mobile-nav-btn.nav-qr {
+    background: var(--gold) !important;
+    color: #000 !important;
+    border-radius: 16px !important;
+    padding: 0.5rem 0.9rem !important;
+    box-shadow: 0 4px 16px rgba(255,215,0,0.4) !important;
+    transform: translateY(-4px);
+}
+
+.mobile-nav-btn.nav-qr:hover {
+    background: #FFA500 !important;
+    transform: translateY(-6px) !important;
+    box-shadow: 0 8px 20px rgba(255,215,0,0.5) !important;
+}
+
+/* Notification badge on nav */
+.mobile-nav-btn .nav-badge {
+    position: absolute;
+    top: 2px;
+    right: 6px;
+    background: var(--red);
+    color: white;
+    font-size: 0.55rem;
+    font-weight: 800;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #1a1a1a;
+}
+
+.mobile-nav-btn {
+    position: relative;
+}
