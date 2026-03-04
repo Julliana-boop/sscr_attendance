@@ -13,42 +13,8 @@
     <script src="students-data.js"></script>
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="mobile-fix.css">
-
-    
-<nav class="mobile-nav" id="mobileNav">
-
-    <button class="mobile-nav-btn" onclick="switchSection('students')">
-        <i data-lucide="users" class="nav-icon-svg"></i>
-        <span class="nav-label">Students</span>
-    </button>
-
-    <button class="mobile-nav-btn" onclick="switchSection('attendance')">
-        <i data-lucide="clipboard-list" class="nav-icon-svg"></i>
-        <span class="nav-label">Attendance</span>
-    </button>
-
-    <button class="mobile-nav-btn nav-qr" onclick="openModal('addStudentModal')">
-        <i data-lucide="user-plus" class="nav-icon-svg"></i>
-        <span class="nav-label">Add</span>
-    </button>
-
-    <button class="mobile-nav-btn" onclick="toggleNotifications(event)">
-        <span style="position:relative;display:inline-flex;">
-            <i data-lucide="bell" class="nav-icon-svg"></i>
-            <span class="nav-badge" id="mobileNotifBadge" style="display:none"></span>
-        </span>
-        <span class="nav-label">Alerts</span>
-    </button>
-
-    <button class="mobile-nav-btn" onclick="logout()">
-        <i data-lucide="log-out" class="nav-icon-svg"></i>
-        <span class="nav-label">Logout</span>
-    </button>
-
-</nav>
-<script>
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-</script>
+    <link rel="stylesheet" href="mobile-app.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -63,7 +29,6 @@
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="viewLogs()" title="View system activity logs">
                     System Logs
-                    
                 </button>
                 <div class="admin-profile">
                     <div class="admin-avatar">JG</div>
@@ -192,6 +157,8 @@
                 </table>
             </div>
 
+            <div class="pagination" id="paginationWrap"></div>
+        </div>
 
     </div><!-- /container -->
 
@@ -710,7 +677,7 @@
         function pad(n) { return String(n).padStart(2, '0'); }
 
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-      function viewLogs() { window.location.href = 'system-logs.html'; }
+        function viewLogs() { window.location.href = 'system-logs.html'; }
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 sessionStorage.removeItem('sscr_user');
@@ -730,6 +697,38 @@
         })();
     </script>
 
+    <!-- ══ MOBILE BOTTOM NAV — correctly placed before </body> ══ -->
+    <nav class="mobile-nav" id="mobileNav">
 
+        <button class="mobile-nav-btn" onclick="switchSection('students')">
+            <i data-lucide="users" class="nav-icon-svg"></i>
+            <span class="nav-label">Students</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="switchSection('attendance')">
+            <i data-lucide="clipboard-list" class="nav-icon-svg"></i>
+            <span class="nav-label">Attendance</span>
+        </button>
+
+        <button class="mobile-nav-btn nav-qr" onclick="openModal('addStudentModal')">
+            <i data-lucide="user-plus" class="nav-icon-svg"></i>
+            <span class="nav-label">Add</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="toggleNotifications(event)">
+            <span style="position:relative;display:inline-flex;">
+                <i data-lucide="bell" class="nav-icon-svg"></i>
+                <span class="nav-badge" id="mobileNotifBadge" style="display:none"></span>
+            </span>
+            <span class="nav-label">Alerts</span>
+        </button>
+
+        <button class="mobile-nav-btn" onclick="logout()">
+            <i data-lucide="log-out" class="nav-icon-svg"></i>
+            <span class="nav-label">Logout</span>
+        </button>
+
+    </nav>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
